@@ -93,11 +93,18 @@ def generate_launch_description():
         default_value='False',
         description='Digital Gain Control'
     )
+    
+    namespace_arg = DeclareLaunchArgument(
+        "namespace",
+        default_value="",
+        description="Namespace for the nodes"
+    )    
 
     nemo_server_node = Node(
         package='sobits_speech_recognition',
         executable='stt_server',
         name='stt_server',
+        namespace=LaunchConfiguration('namespace'),
         parameters=[
             {
                 'stt_name': LaunchConfiguration("stt_name"),
@@ -136,5 +143,6 @@ def generate_launch_description():
         noise_suppression_arg,
         analog_gain_control_arg,
         digital_gain_control_arg,
-        nemo_server_node,
+        namespace_arg,
+        nemo_server_node
     ])

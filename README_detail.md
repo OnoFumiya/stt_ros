@@ -37,6 +37,22 @@
 
 <p align="right">(<a href="#whisper-top">Whisperトップに戻る</a>)</p>
 
+## モデルのダウンロード方法
+1. 以下のコマンドでGUIを起動します．
+    ```sh
+    ros2 run sobits_speech_recognition dl_whisper
+    ```
+2. モデルをクリックして選択します．
+3. Downloadボタンを押してモデルをダウンロードします．
+4. 完了したら閉じます．
+
+- ダウンロード済みモデルは以下のコマンドでも確認できます
+    ```sh
+    ls ~/.sobits_speech_recognition/whisper_models/
+    ```
+
+<p align="right">(<a href="#whisper-top">Whisperトップに戻る</a>)</p>
+
 ## 実行・操作方法
 1. Ubuntuの設定で，サウンドの入力デバイスを使用するマイクに設定します．
 
@@ -74,11 +90,6 @@
 *1 サイズが小さい順に``tiny``, ``base``, ``small``, ``medium``, ``large``, ``large-v2``, ``large-v3``, ``large-v3-turbo``があります．
 Faster-Whisperも同じモデルサイズに対応しますが，推論は高速かつ省メモリです．
 詳細は[モデル一覧](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013)を参照してください．
-
-- モデルを変更する場合，[sobits_speech_recognition/download_utils/dl_whisper.py](sobits_speech_recognition/download_utils/dl_whisper.py)の`small`を使用したいモデル名に変更し，以下のコマンドでダウンロードしてください．
-    ```sh
-    ros2 run sobits_speech_recognition dl_whisper
-    ```
 
 - `model_name`, `backend`, `compute_type`, `use_feedback`, `vad_name`, とエコーキャンセル関連以外のパラメータはlaunchファイル起動後でも変更可能です．
     - 例：min_wipe_durationを0.1に変更する場合
@@ -484,9 +495,4 @@ Nemo ASRは[NeMo Framework](https://github.com/NVIDIA/NeMo)の自動音声認識
 | --- | --- | --- |
 | model| 使用するVOSKモデル．軽量モデルや大容量モデルなどを選択できる．| vosk-model-small-en-us-0.15|
 
-- `model`, `use_feedback`とエコーキャンセル関連以外のパラメータはlaunchファイル起動後でも変更可能です．
-  - 例：`mic_volume`を150%に変更する場合
-    ```sh
-    ros2 param set /stt_server mic_volume 150%
-    ```
 <p align="right">(<a href="#vosk-top">VOSKトップに戻る</a>)</p>

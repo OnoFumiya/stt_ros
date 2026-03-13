@@ -51,11 +51,17 @@ def generate_launch_description():
         default_value="",
         description="JSON grammar string for Vosk recognizer (empty = no grammar)"
     )
+    namespace_arg = DeclareLaunchArgument(
+        "namespace",
+        default_value="",
+        description="Namespace for the nodes"
+    )
 
     vosk_node = Node(
         package='sobits_speech_recognition',
         executable='stt_server',
         name='stt_server',
+        namespace=LaunchConfiguration('namespace'),
         output='screen',
         parameters=[{
             'stt_name': LaunchConfiguration('stt_name'),
@@ -71,6 +77,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        namespace_arg,
         stt_name_arg,
         model_arg,
         mic_volume_arg,

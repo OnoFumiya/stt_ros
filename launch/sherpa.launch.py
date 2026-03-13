@@ -1,9 +1,9 @@
 import os
-from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     package_name = 'sobits_speech_recognition'
@@ -109,11 +109,17 @@ def generate_launch_description():
         default_value=default_config_path,
         description='Full path to the YAML configuration file'
     )
+    namespace_arg = DeclareLaunchArgument(
+        "namespace",
+        default_value="",
+        description="Namespace for the nodes"
+    )    
 
     sherpa_onnx_node = Node(
         package=package_name,
         executable='stt_server',
         name='stt_server',
+        namespace=LaunchConfiguration('namespace'),
         output='screen',
         parameters=[
             LaunchConfiguration('config_path'),
@@ -139,6 +145,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        namespace_arg,
         config_path_arg,
         stt_name_arg,
         model_name_arg,
@@ -155,5 +162,5 @@ def generate_launch_description():
         noise_suppression_arg,
         analog_gain_control_arg,
         digital_gain_control_arg,
-        sherpa_onnx_node
+        sherpa_onnx_node,
     ])

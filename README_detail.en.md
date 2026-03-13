@@ -39,6 +39,20 @@
 
 <p align="right">(<a href="#whisper-top">back to Whisper top</a>)</p>
 
+## Downloading Models
+1. Launch the GUI with the following command.
+    ```sh
+    ros2 run sobits_speech_recognition dl_whisper
+    ```
+2. Click on a model to select it.
+3. Press the **Download** button to download the model.
+4. Close when done.
+
+- Installed models can also be listed with the following command.
+    ```sh
+    ls ~/.sobits_speech_recognition/whisper_models/
+    ```
+
 ## Launch and Usage
 
 1. In Ubuntu Settings, set the sound input device to the microphone you wish to use.
@@ -77,11 +91,6 @@ The following are Whisper-specific parameters configurable in [whisper.launch.py
 *1 Available sizes in ascending order: `tiny`, `base`, `small`, `medium`, `large`, `large-v2`, `large-v3`, `large-v3-turbo`.
 faster-whisper supports the same model sizes with faster and more memory-efficient inference.
 See the [model list](https://huggingface.co/collections/openai/whisper-release-6501bba2cf999715fd953013) for details.
-
-- To use a different model, edit the model name in [sobits_speech_recognition/download_utils/dl_whisper.py](sobits_speech_recognition/download_utils/dl_whisper.py) and run:
-    ```sh
-    ros2 run sobits_speech_recognition dl_whisper
-    ```
 
 - Parameters other than `model_name`, `backend`, `compute_type`, `use_feedback`, `vad_name`, and echo cancellation-related parameters can be changed after launching.
     - Example: change `min_wipe_duration` to 0.1
@@ -468,11 +477,5 @@ The following are VOSK-specific parameters configurable in [vosk.launch.py](laun
 | --- | --- | --- |
 | model | VOSK model to use. Lightweight and large-vocabulary models are available. | vosk-model-small-en-us-0.15 |
 | vosk_grammar | JSON grammar string to restrict the recognizer's vocabulary (empty = no grammar restriction). | "" |
-
-- Parameters other than `model` and echo cancellation-related parameters can be changed after launching.
-  - Example: change `mic_volume` to 150%
-    ```sh
-    ros2 param set /stt_server mic_volume 150%
-    ```
 
 <p align="right">(<a href="#vosk-top">back to VOSK top</a>)</p>

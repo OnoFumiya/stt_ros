@@ -7,6 +7,8 @@ from .base_engine import BaseEngine
 class WhisperEngine(BaseEngine):
     def __init__(self, node):
         super().__init__(node)
+        model_root = os.path.expanduser("~/.sobits_speech_recognition/whisper_models")
+        os.environ["HF_HOME"] = model_root
         self.node.declare_parameter('backend', 'whisper')
         self.node.declare_parameter('model_name', 'small')
         self.node.declare_parameter('compute_type', 'float16')
@@ -28,17 +30,31 @@ class WhisperEngine(BaseEngine):
 
     def _load_model(self):
         try:
-            device_str = self.device_pref if self.device_pref else ("cuda:0" if torch.cuda.is_available() else "cpu")
+            raw_device = self.device_pref if self.device_pref else ("cuda" if torch.cuda.is_available() else "cpu")
+            
+            model_root = os.path.expanduser("~/.sobits_speech_recognition/whisper_models")
+            os.makedirs(model_root, exist_ok=True)
 
             if self.backend == "whisper":
                 import whisper
-                self.model = whisper.load_model(self.model_name, device=device_str)
-                self.logger.info(f"[{self.backend}] Model '{self.model_name}' loaded on {device_str}")
+                self.model = whisper.load_model(self.model_name, device=raw_device, download_root=model_root)
+                self.logger.info(f"[{self.backend}] Model '{self.model_name}' loaded on {raw_device}")
             
             elif self.backend == "faster-whisper":
                 from faster_whisper import WhisperModel
-                self.model = WhisperModel(self.model_name, device=device_str, compute_type=self.compute_type)
-                self.logger.info(f"[{self.backend}] Model '{self.model_name}' loaded on {device_str}")
+                fw_device = "cuda" if "cuda" in raw_device else "cpu"
+                load_name = self.model_name
+                if "distil" in self.model_name and "/" not in self.model_name:
+                    load_name = f"Systran/faster-{self.model_name}"
+
+                self.model = WhisperModel(
+                    load_name, 
+                    device=fw_device, 
+                    compute_type=self.compute_type, 
+                    download_root=model_root,
+                    local_files_only=False 
+                )
+                self.logger.info(f"[{self.backend}] Model '{load_name}' loaded on {fw_device}")
 
         except Exception as e:
             self.logger.fatal(f"Failed to load Whisper model: {e}\n{traceback.format_exc()}")
