@@ -29,7 +29,7 @@ class WhisperModelManager:
         self.notebook = ttk.Notebook(main_frame)
         self.notebook.pack(fill=tk.BOTH, expand=True)
         self.tab_orig = ttk.Frame(self.notebook)
-        self.notebook.add(self.tab_orig, text="Original Whisper (.pt)")
+        self.notebook.add(self.tab_orig, text="Open AI Whisper (.pt)")
         self.tree = self.create_treeview(self.tab_orig)
         
         self.tab_faster = ttk.Frame(self.notebook)
@@ -44,7 +44,7 @@ class WhisperModelManager:
         self.btn_download.pack(side=tk.LEFT, padx=5)
 
         self.btn_delete = tk.Button(btn_frame, text="Delete Selected", command=self.delete_model, 
-                                    state=tk.DISABLED, bg="Fffebee", width=20)
+                                    state=tk.DISABLED, bg="#ffebee", width=20)
         self.btn_delete.pack(side=tk.LEFT, padx=5)
 
         tk.Button(btn_frame, text="Refresh", command=self.refresh_list).pack(side=tk.RIGHT, padx=5)
