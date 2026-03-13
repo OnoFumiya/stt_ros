@@ -21,6 +21,5 @@ pip3 install --force-reinstall "numpy==1.26.4" --break-system-packages
 echo "--- Install coverage ---"
 pip3 install --force-reinstall coverage==6.2 --break-system-packages
 
-python3 -c "import whisper; whisper.load_model('small')"
-
+python3 -c "import os, whisper; root=os.path.expanduser('~/.sobits_speech_recognition/whisper_models'); os.makedirs(root, exist_ok=True); whisper.load_model('small', download_root=root)"
 echo "╚══╣ Install: Whisper (FINISHED) ╠══╝"
