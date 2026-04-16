@@ -120,6 +120,29 @@ The following parameters are common to all launch files.
 | --- | --- | --- |
 | mic_volume | Sets the microphone input volume as a percentage. Returns to the original volume after shutdown. (e.g., "150%") | "" |
 | use_feedback | Whether to use intermediate feedback | True |
+| change_default_sink | Whether to switch the system default output sink to `speaker_aec` when `speaker_aec` is created | True |
+| restore_default_sink_on_stop | Whether to restore the previous default sink on shutdown if this node changed it | True |
+
+`change_default_sink` and `restore_default_sink_on_stop` control different phases.
+
+- `change_default_sink`
+  - Controls whether the node switches the default sink to `speaker_aec` while it is running.
+- `restore_default_sink_on_stop`
+  - Controls whether the node restores the original default sink when it stops, but only if this node changed it.
+
+For example:
+
+- `change_default_sink=True`, `restore_default_sink_on_stop=True`
+  - Use `speaker_aec` while running and restore the previous sink on shutdown.
+- `change_default_sink=True`, `restore_default_sink_on_stop=False`
+  - Switch to `speaker_aec` while running and keep it after shutdown.
+- `change_default_sink=False`, `restore_default_sink_on_stop=False`
+  - Never change the default sink.
+
+> [!NOTE]
+`speaker_aec` is a virtual sink created from the default output device that exists when the server starts.
+When `use_echo_cancel=True`, select the desired output device in the GUI or with `pactl` before launching the server.
+If you change the output device in the GUI after the server has started, the already-created `speaker_aec` parent device is not updated automatically.
 
 The following parameters relate to echo cancellation and are only active when `use_echo_cancel` is `True`.
 
