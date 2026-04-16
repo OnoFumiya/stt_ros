@@ -12,13 +12,17 @@ import glob
 
 class AudioSystem:
     def __init__(self, logger, use_echo_cancel=False, noise_suppression=False, 
-                 analog_gain=False, digital_gain=False, mic_volume="100%", sample_rate=16000):
+                 analog_gain=False, digital_gain=False, mic_volume="100%",
+                 change_default_sink=True, restore_default_sink_on_stop=True,
+                 sample_rate=16000):
         self.logger = logger
-        self.use_echo_cancel = use_echo_cancel
-        self.noise_suppression = noise_suppression
-        self.analog_gain = analog_gain
-        self.digital_gain = digital_gain
+        self.use_echo_cancel = self._as_bool(use_echo_cancel)
+        self.noise_suppression = self._as_bool(noise_suppression)
+        self.analog_gain = self._as_bool(analog_gain)
+        self.digital_gain = self._as_bool(digital_gain)
         self.target_mic_volume = mic_volume
+        self.change_default_sink = self._as_bool(change_default_sink)
+        self.restore_default_sink_on_stop = self._as_bool(restore_default_sink_on_stop)
         self.sample_rate = sample_rate
 
         self.audio_q = queue.Queue()
@@ -30,8 +34,19 @@ class AudioSystem:
         self.original_mic_volume = None
         self.source_to_modify = None
         self.active_source = None
+        self.default_sink_changed = False
 
         self._initialize_pulseaudio()
+
+    @staticmethod
+    def _as_bool(value):
+        if isinstance(value, bool):
+            return value
+        if value is None:
+            return False
+        if isinstance(value, str):
+            return value.strip().lower() in {"1", "true", "yes", "on"}
+        return bool(value)
 
     def _initialize_pulseaudio(self):
         try:
@@ -57,6 +72,8 @@ class AudioSystem:
             self.logger.info(f"  - Noise Suppression:  {status_icon(self.noise_suppression)}")
             self.logger.info(f"  - Analog Gain Ctrl:   {status_icon(self.analog_gain)}")
             self.logger.info(f"  - Digital Gain Ctrl:  {status_icon(self.digital_gain)}")
+            self.logger.info(f"  - Change Default Sink: {status_icon(self.change_default_sink)}")
+            self.logger.info(f"  - Restore Default Sink On Stop: {status_icon(self.restore_default_sink_on_stop)}")
             self.logger.info(f"  - Mic Volume:         {self.original_mic_volume} -> {self.target_mic_volume or 'Keep'}")
             self.logger.info(f"  - Sample Rate:        {self.sample_rate} Hz")
             self.logger.info("="*50)
@@ -82,8 +99,10 @@ class AudioSystem:
 
                 res = subprocess.run(cmd, capture_output=True, text=True, check=True)
                 self.aec_module_index = int(res.stdout.strip())
-                
-                subprocess.run(['pactl', 'set-default-sink', 'speaker_aec'], check=True)
+
+                if self.change_default_sink:
+                    subprocess.run(['pactl', 'set-default-sink', 'speaker_aec'], check=True)
+                    self.default_sink_changed = True
                 self.active_source = "mic_aec"
             else:
                 self.active_source = default_source
@@ -147,8 +166,9 @@ class AudioSystem:
         if self.source_to_modify and self.original_mic_volume:
             subprocess.run(['pactl', 'set-source-volume', self.source_to_modify, self.original_mic_volume], stderr=subprocess.DEVNULL)
         
-        if self.original_default_sink:
+        if self.restore_default_sink_on_stop and self.default_sink_changed and self.original_default_sink:
             subprocess.run(['pactl', 'set-default-sink', self.original_default_sink], stderr=subprocess.DEVNULL)
+            self.default_sink_changed = False
 
         if self.aec_module_index:
             subprocess.run(['pactl', 'unload-module', str(self.aec_module_index)], stderr=subprocess.DEVNULL)

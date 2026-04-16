@@ -104,6 +104,18 @@ def generate_launch_description():
         description='Digital Gain Control'
     )
 
+    change_default_sink_arg = DeclareLaunchArgument(
+        'change_default_sink',
+        default_value='true',
+        description='Allow the node to switch the system default sink when creating speaker_aec'
+    )
+    
+    restore_default_sink_on_stop_arg = DeclareLaunchArgument(
+        'restore_default_sink_on_stop',
+        default_value='true',
+        description='Restore the previous default sink when the node stops after changing it'
+    )
+
     config_path_arg = DeclareLaunchArgument(
         'config_path',
         default_value=default_config_path,
@@ -140,6 +152,8 @@ def generate_launch_description():
                 'noise_suppression': LaunchConfiguration('noise_suppression'),
                 'analog_gain_control': LaunchConfiguration('analog_gain_control'),
                 'digital_gain_control': LaunchConfiguration('digital_gain_control'),
+                'change_default_sink': LaunchConfiguration('change_default_sink'),
+                'restore_default_sink_on_stop': LaunchConfiguration('restore_default_sink_on_stop'),
             }
         ]
     )
@@ -162,5 +176,7 @@ def generate_launch_description():
         noise_suppression_arg,
         analog_gain_control_arg,
         digital_gain_control_arg,
+        change_default_sink_arg,
+        restore_default_sink_on_stop_arg,
         sherpa_onnx_node,
     ])
