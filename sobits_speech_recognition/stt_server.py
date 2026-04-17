@@ -76,6 +76,8 @@ class STTActionServer(Node):
         self.declare_parameter('analog_gain_control', False)
         self.declare_parameter('digital_gain_control', False)
         self.declare_parameter('mic_volume', '100%')
+        self.declare_parameter('change_default_sink', True)
+        self.declare_parameter('restore_default_sink_on_stop', True)
 
         if self._stt_model_instance.use_external_vad:
             if not VAD_AVAILABLE:
@@ -93,7 +95,9 @@ class STTActionServer(Node):
             self.get_parameter('noise_suppression').value,
             self.get_parameter('analog_gain_control').value,
             self.get_parameter('digital_gain_control').value,
-            str(self.get_parameter('mic_volume').value)
+            str(self.get_parameter('mic_volume').value),
+            self.get_parameter('change_default_sink').value,
+            self.get_parameter('restore_default_sink_on_stop').value
         )
         self.player = audio_utils.AudioPlayer(self.get_logger(), os.path.join(get_package_share_directory('sobits_interfaces'), 'mp3'))
         self.storage = audio_utils.AudioStorage(self.get_logger(), self.sound_file_directory)

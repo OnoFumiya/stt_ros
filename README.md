@@ -116,6 +116,29 @@ SOBITS Speech Recognitionは様々なSpeech to Text (STT)をROS2のAction通信�
 | --- | --- | --- |
 | mic_volume	| マイクの入力音量をパーセンテージで設定する．プログラム終了後は元の音量に戻る．例: "150%" | "" |
 | use_feedback | Feedbackを使用するかどうか | True |
+| change_default_sink | `speaker_aec` を作成したときに，システムのデフォルト出力先を `speaker_aec` に切り替えるかどうか | True |
+| restore_default_sink_on_stop | ノード停止時に，このノードが変更したデフォルト出力先を起動前の値に戻すかどうか | True |
+
+`change_default_sink` と `restore_default_sink_on_stop` は役割が異なります．
+
+- `change_default_sink`
+  - 実行中に `speaker_aec` をデフォルトシンクへ切り替えるかを制御します．
+- `restore_default_sink_on_stop`
+  - 停止時に，このノード自身が変更したデフォルトシンクを元に戻すかを制御します．
+
+例えば，
+
+- `change_default_sink=True`, `restore_default_sink_on_stop=True`
+  - 実行中は `speaker_aec` を使い，終了時に元へ戻します．
+- `change_default_sink=True`, `restore_default_sink_on_stop=False`
+  - 実行中に `speaker_aec` へ切り替えますが，終了後もそのままにします．
+- `change_default_sink=False`, `restore_default_sink_on_stop=False`
+  - デフォルトシンクを変更しません．
+
+> [!NOTE]
+`speaker_aec` はサーバ起動時のデフォルト出力先をもとに作られる仮想シンクです．  
+`use_echo_cancel=True` の場合は，先にGUIや `pactl` で使用したい出力先を選択してからサーバを起動してください． 
+サーバ起動後にGUIで出力先を変更しても，既に作成済みの `speaker_aec` の親デバイスは自動では切り替わりません．
 
 
 以下はエコーキャンセルに関するパラメータです． `use_echo_cancel`が`True`のときに有効です．

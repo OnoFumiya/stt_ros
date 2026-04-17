@@ -108,6 +108,16 @@ def generate_launch_description():
         default_value="False",
         description="Enable digital gain control"
     )
+    change_default_sink_arg = DeclareLaunchArgument(
+        "change_default_sink",
+        default_value="True",
+        description="Allow the node to switch the system default sink when creating speaker_aec"
+    )
+    restore_default_sink_on_stop_arg = DeclareLaunchArgument(
+        "restore_default_sink_on_stop",
+        default_value="True",
+        description="Restore the previous default sink when the node stops after changing it"
+    )
     namespace_arg = DeclareLaunchArgument(
         "namespace",
         default_value="",
@@ -142,6 +152,8 @@ def generate_launch_description():
                 "noise_suppression": LaunchConfiguration("noise_suppression"),
                 "analog_gain_control": LaunchConfiguration("analog_gain_control"),
                 "digital_gain_control": LaunchConfiguration("digital_gain_control"),
+                "change_default_sink": LaunchConfiguration("change_default_sink"),
+                "restore_default_sink_on_stop": LaunchConfiguration("restore_default_sink_on_stop"),
                 "use_prompt": LaunchConfiguration("use_prompt"),
             }
         ]
@@ -168,6 +180,8 @@ def generate_launch_description():
         noise_suppression_arg,
         analog_gain_control_arg,
         digital_gain_control_arg,
+        change_default_sink_arg,
+        restore_default_sink_on_stop_arg,
         namespace_arg,
         stt_server_node
     ])
