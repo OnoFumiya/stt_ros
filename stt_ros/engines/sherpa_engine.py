@@ -32,7 +32,7 @@ class SherpaEngine(BaseEngine):
         if model_name_param.startswith(('/', '~')):
             self.model_dir = os.path.expanduser(model_name_param).rstrip("/\\")
         else:
-            self.model_dir = os.path.expanduser(os.path.join("~/.sobits_speech_recognition/sherpa_models/", model_name_param)).rstrip("/\\")
+            self.model_dir = os.path.expanduser(os.path.join("~/.stt_ros/sherpa_models/", model_name_param)).rstrip("/\\")
         self.node.get_logger().info(f"[*] Model Configuration:")
         self.node.get_logger().info(f"    - Name: '{model_name_param}'")
         self.node.get_logger().info(f"    - Path: {self.model_dir}")
@@ -103,7 +103,7 @@ class SherpaEngine(BaseEngine):
         path = self.node.get_parameter('config_path').value
         if not path:
             from ament_index_python.packages import get_package_share_directory
-            path = os.path.join(get_package_share_directory('sobits_speech_recognition'), 'config', 'sherpa_params.yaml')
+            path = os.path.join(get_package_share_directory('stt_ros'), 'config', 'sherpa_params.yaml')
 
         try:
             with open(path, 'r') as f:

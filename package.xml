@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>sobits_speech_recognition</name>
+  <name>stt_ros</name>
   <version>0.0.0</version>
   <description>Integrated Speech Recognition Package for RoboCup</description>
   <maintainer email="f22hakuti@gmail.com">ryo</maintainer>
@@ -9,7 +9,7 @@
 
   <depend>rclpy</depend>
   <depend>std_msgs</depend>
-  <depend>sobits_interfaces</depend>
+  <depend>nekomimi_bot_interfaces</depend>
   <exec_depend>ament_index_python</exec_depend>
 
   <test_depend>ament_copyright</test_depend>

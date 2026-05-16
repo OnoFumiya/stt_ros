@@ -2,7 +2,7 @@ import os
 from glob import glob
 from setuptools import find_packages, setup
 
-package_name = 'sobits_speech_recognition'
+package_name = 'stt_ros'
 
 setup(
     name=package_name,
@@ -15,6 +15,7 @@ setup(
         (os.path.join('share', package_name, "launch"), glob('launch/*.launch.py')),
         (os.path.join('share', package_name, "config"), glob('config/*.yaml')),
         (os.path.join('share', package_name, "sound_file"), glob('sound_file/*')),
+        (os.path.join('share', package_name, "mp3"), glob('mp3/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -24,11 +25,11 @@ setup(
     license='BSD-3-Clause',
     entry_points={
         'console_scripts': [
-            'stt_server = sobits_speech_recognition.stt_server:main',
-            'dl_nemo = sobits_speech_recognition.download_utils.dl_nemo:main',
-            'dl_vosk = sobits_speech_recognition.download_utils.dl_vosk:main',
-            'dl_sherpa = sobits_speech_recognition.download_utils.dl_sherpa:main',
-            'dl_whisper = sobits_speech_recognition.download_utils.dl_whisper:main',
+            'stt_server = stt_ros.stt_server:main',
+            'dl_nemo = stt_ros.download_utils.dl_nemo:main',
+            'dl_vosk = stt_ros.download_utils.dl_vosk:main',
+            'dl_sherpa = stt_ros.download_utils.dl_sherpa:main',
+            'dl_whisper = stt_ros.download_utils.dl_whisper:main',
         ],
     },
 )

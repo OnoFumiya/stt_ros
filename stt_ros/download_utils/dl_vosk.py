@@ -17,7 +17,7 @@ from threading import Thread
 class ModelDownloader(Node):
     def __init__(self):
         super().__init__('model_downloader')
-        self.model_dir = os.path.expanduser("~/.sobits_speech_recognition/vosk_models")
+        self.model_dir = os.path.expanduser("~/.stt_ros/vosk_models")
 
         if not os.path.isdir(self.model_dir):
             os.makedirs(self.model_dir)

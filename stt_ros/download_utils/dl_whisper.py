@@ -1,6 +1,6 @@
 import os
 import sys
-os.environ["HF_HOME"] = os.path.expanduser("~/.sobits_speech_recognition/whisper_models")
+os.environ["HF_HOME"] = os.path.expanduser("~/.stt_ros/whisper_models")
 import threading
 import requests
 import whisper
@@ -15,7 +15,7 @@ class WhisperModelManager:
         self.root = root
         self.root.title("Whisper Model Manager")
         self.root.geometry("900x750")
-        self.base_dir = os.path.expanduser("~/.sobits_speech_recognition/whisper_models")
+        self.base_dir = os.path.expanduser("~/.stt_ros/whisper_models")
         os.makedirs(self.base_dir, exist_ok=True)
         self.create_widgets()
         self.refresh_list()
@@ -89,7 +89,7 @@ class WhisperModelManager:
         self.log_area.configure(state='disabled')
 
     def refresh_list(self):
-        self.base_dir = os.path.expanduser("~/.sobits_speech_recognition/whisper_models")
+        self.base_dir = os.path.expanduser("~/.stt_ros/whisper_models")
 
         self.tree.delete(*self.tree.get_children())
         for name in whisper.available_models():

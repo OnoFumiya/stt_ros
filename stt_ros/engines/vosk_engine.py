@@ -23,7 +23,7 @@ class VoskEngine(BaseEngine):
     def _load_model(self):
         self.node.declare_parameter('model', "vosk-model-small-en-us-0.15")
         model_name = self.node.get_parameter('model').value
-        model_path = os.path.join(os.path.expanduser("~/.sobits_speech_recognition/vosk_models"), model_name)
+        model_path = os.path.join(os.path.expanduser("~/.stt_ros/vosk_models"), model_name)
 
         if not os.path.exists(model_path):
             self.node.get_logger().error(f"Vosk model not found at {model_path}")

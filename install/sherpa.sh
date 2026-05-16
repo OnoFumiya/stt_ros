@@ -15,7 +15,7 @@ pip3 install onnxruntime sherpa-onnx --break-system-packages
 pip3 install "numpy==1.26.4" --force-reinstall --break-system-packages
 pip3 install soundfile --break-system-packages
 
-BASE_DIR="$HOME/.sobits_speech_recognition/sherpa_models"
+BASE_DIR="$HOME/.stt_ros/sherpa_models"
 mkdir -p "$BASE_DIR"
 
 echo "Configuring LD_LIBRARY_PATH..."

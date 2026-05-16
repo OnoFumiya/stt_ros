@@ -113,7 +113,7 @@ def generate_launch_description():
     )    
 
     nemo_server_node = Node(
-        package='sobits_speech_recognition',
+        package='stt_ros',
         executable='stt_server',
         name='stt_server',
         namespace=LaunchConfiguration('namespace'),

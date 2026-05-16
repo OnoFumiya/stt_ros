@@ -7,7 +7,7 @@ from .base_engine import BaseEngine
 class WhisperEngine(BaseEngine):
     def __init__(self, node):
         super().__init__(node)
-        model_root = os.path.expanduser("~/.sobits_speech_recognition/whisper_models")
+        model_root = os.path.expanduser("~/.stt_ros/whisper_models")
         os.environ["HF_HOME"] = model_root
         self.node.declare_parameter('backend', 'whisper')
         self.node.declare_parameter('model_name', 'small')
@@ -32,7 +32,7 @@ class WhisperEngine(BaseEngine):
         try:
             raw_device = self.device_pref if self.device_pref else ("cuda" if torch.cuda.is_available() else "cpu")
             
-            model_root = os.path.expanduser("~/.sobits_speech_recognition/whisper_models")
+            model_root = os.path.expanduser("~/.stt_ros/whisper_models")
             os.makedirs(model_root, exist_ok=True)
 
             if self.backend == "whisper":

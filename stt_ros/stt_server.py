@@ -3,7 +3,7 @@ from rclpy.node import Node
 from rclpy.action import ActionServer, GoalResponse, CancelResponse
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
-from sobits_interfaces.action import SpeechRecognition
+from nekomimi_bot_interfaces.action import SpeechRecognition
 from ament_index_python.packages import get_package_share_directory
 
 import numpy as np
@@ -37,7 +37,7 @@ class STTActionServer(Node):
         self.declare_parameter('hop_size', 256)
         self.declare_parameter('threshold', 0.5)
 
-        self.package_name = 'sobits_speech_recognition'
+        self.package_name = 'stt_ros'
         share_dir = get_package_share_directory(self.package_name)
         self.sound_file_directory = os.path.join(share_dir, 'sound_file')
         os.makedirs(self.sound_file_directory, exist_ok=True)
@@ -99,7 +99,7 @@ class STTActionServer(Node):
             self.get_parameter('change_default_sink').value,
             self.get_parameter('restore_default_sink_on_stop').value
         )
-        self.player = audio_utils.AudioPlayer(self.get_logger(), os.path.join(get_package_share_directory('sobits_interfaces'), 'mp3'))
+        self.player = audio_utils.AudioPlayer(self.get_logger(), os.path.join(get_package_share_directory('stt_ros'), 'mp3'))
         self.storage = audio_utils.AudioStorage(self.get_logger(), self.sound_file_directory)
 
     def goal_callback(self, goal_request):

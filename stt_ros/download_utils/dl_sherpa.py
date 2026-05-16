@@ -24,7 +24,7 @@ class ModelManagerApp:
         self.root.geometry("1100x850")
         self.root.minsize(800, 400)
 
-        self.base_dir = os.path.expanduser("~/.sobits_speech_recognition/sherpa_models")
+        self.base_dir = os.path.expanduser("~/.stt_ros/sherpa_models")
         if not os.path.exists(self.base_dir):
             os.makedirs(self.base_dir)
 
@@ -41,7 +41,7 @@ class ModelManagerApp:
     def get_config_path(self):
         if ROS2_AVAILABLE:
             try:
-                pkg_share = get_package_share_directory('sobits_speech_recognition')
+                pkg_share = get_package_share_directory('stt_ros')
                 path = os.path.join(pkg_share, 'config', 'sherpa_model_list.yaml')
                 if os.path.exists(path): return path
             except: pass
